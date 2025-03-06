@@ -1,6 +1,7 @@
 import express from "express";
 import workoutRoutes from "./routes/workout.js";
 import dotenv from "dotenv";
+import mongoose from "mongoose";
 dotenv.config();
 
 const app = express();
@@ -19,6 +20,14 @@ app.use(function (req, res, next) {
 //when it detects this url endpoint, then it will use workoutRoutes
 app.use("/api/workouts", workoutRoutes);
 
-app.listen(process.env.PORT, function () {
-  console.log("listening on port", process.env.PORT);
-});
+//connect to db
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(function () {
+    app.listen(process.env.PORT, function () {
+      console.log("connected to db & listening on port", process.env.PORT);
+    });
+  })
+  .catch(function (error) {
+    console.log(error);
+  });

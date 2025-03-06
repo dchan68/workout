@@ -12,7 +12,8 @@ async function getWorkouts(req, res) {
 async function getWorkout(req, res) {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) { //ID in mongoose has to be a string of 12 bytes/ 24 hex characters. If it's not, it's not a valid ID
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    //ID in mongoose has to be a string of 12 bytes/ 24 hex characters. If it's not, it's not a valid ID
     return res.status(404).json({ error: "No such workout" });
   }
 
@@ -37,7 +38,41 @@ async function createWorkout(req, res) {
 }
 
 //Delete a workout
+async function deleteWorkout(req, res) {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    //ID in mongoose has to be a string of 12 bytes/ 24 hex characters. If it's not, it's not a valid ID
+    return res.status(404).json({ error: "No such workout" });
+  }
+
+  const workout = await Workout.findOneAndDelete({ _id: id }); //Mongoose uses _id so will try to find _id based on id user gives
+  if (!workout) {
+    return res.status(404).json({ error: "No such workout" });
+  }
+  res.status(200).json(workout);
+}
 
 //Update a workout
+async function updateWorkout(req, res) {
+  const { id } = req.params;
 
-export { getWorkouts, getWorkout, createWorkout };
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    //ID in mongoose has to be a string of 12 bytes/ 24 hex characters. If it's not, it's not a valid ID
+    return res.status(404).json({ error: "No such workout" });
+  }
+  const workout = await Workout.findOneAndUpdate(
+    { _id: id },
+    {
+      ...req.body,
+    }
+  );
+
+  if (!workout) {
+    return res.status(404).json({ error: "No such workout" });
+  }
+
+  res.status(200).json(workout);
+}
+
+export { getWorkouts, getWorkout, createWorkout, deleteWorkout, updateWorkout };

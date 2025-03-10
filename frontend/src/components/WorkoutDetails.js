@@ -1,18 +1,18 @@
 import React from "react";
 
-function WorkoutDetails(workout) {
+function WorkoutDetails({ title, load, reps, createdAt }) {
   return (
     <div className="workout-details">
-      <h4>{workout.title}</h4>
+      <h4>{title}</h4>
       <p>
         <strong>Load (kg):</strong>
-        {workout.load}
+        {load}
       </p>
       <p>
         <strong>Reps:</strong>
-        {workout.reps}
+        {reps}
       </p>
-      <p>{workout.createdAt}</p>
+      <p>{createdAt}</p>
     </div>
   );
 }

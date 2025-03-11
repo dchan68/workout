@@ -1,6 +1,7 @@
 import React from "react";
 
 function WorkoutDetails({ title, load, reps, createdAt }) {
+  
   return (
     <div className="workout-details">
       <h4>{title}</h4>

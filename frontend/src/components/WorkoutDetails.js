@@ -1,20 +1,20 @@
 import React from "react";
 import { useWorkoutsContext } from "../hooks/useWorkoutsContext";
 
-function WorkoutDetails({ title, load, reps, createdAt }) {
+function WorkoutDetails({ title, load, reps, createdAt, _id }) {
+  const { dispatch } = useWorkoutsContext();
 
-  const { dispatch } = useWorkoutsContext()
+  async function handleClick() {
+    const response = await fetch("/api/workouts/" + _id, {
+      method: "DELETE",
+    });
+    const json = await response.json();
 
-  async function handleClick(){
-    const response = fetch('/api/workouts/' + workout._id, {
-      method: 'DELETE'
-    })
-    const json = await response.json()
-    if (response.ok){
-      dispatch({type: 'DELETE_WORKOUT', payload: json})
+    if (response.ok) {
+      dispatch({ type: "DELETE_WORKOUT", payload: json });
     }
   }
-  
+
   return (
     <div className="workout-details">
       <h4>{title}</h4>
@@ -27,7 +27,7 @@ function WorkoutDetails({ title, load, reps, createdAt }) {
         {reps}
       </p>
       <p>{createdAt}</p>
-      <span onCLick={handleClick}>delete</span>
+      <span onClick={handleClick}>delete</span>
     </div>
   );
 }
